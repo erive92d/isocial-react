@@ -1,7 +1,7 @@
-import { connect, connection } from "mongoose";
+const mongoose = require("mongoose");
 require("dotenv").config();
 
-connect(
+mongoose.connect(
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/isocial-react",
   {
     useNewUrlParser: true,
@@ -11,4 +11,4 @@ connect(
   }
 );
 
-export default connection;
+module.exports = mongoose.connection;
