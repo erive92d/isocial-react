@@ -1,5 +1,5 @@
 require("dotenv").config();
-const connection = require("../config/connection");
+const connection = require("../config/connection").default;
 const User = require("../models/User")
 const Post = require("../models/Post")
 connection.on("error", (err) => err);
