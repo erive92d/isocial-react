@@ -30,7 +30,6 @@ export default function ViewPost() {
 
     if (!post) return <h1 className=" animate-bounce">Loading..</h1>
     document.title = `${capitalizeFirst(post?.postAuthor[0].username)}'s post`
-    // console.log(post)
     return (
         <div className=" min-h-screen">
             <div className="p-2">

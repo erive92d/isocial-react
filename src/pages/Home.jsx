@@ -35,7 +35,6 @@ export default function Home() {
         return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
-    // console.log(show)
     return (
         <div className=" min-h-screen">
             {auth.loggedIn() ? <PostForm setRender={setRender} /> : null}
