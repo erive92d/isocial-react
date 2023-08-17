@@ -29,7 +29,7 @@ export default function Header() {
             {user ? (
                 <div className="flex flex-col p-2">
                     <Link className="" to="/me">
-                        Welcome {capitalizeFirst(user.name)}
+                        Welcome {capitalizeFirst(user.name)}!
                     </Link>
                 </div>
             ) : (
