@@ -16,7 +16,6 @@ export default function ViewPost() {
     const [fetch, setFetch] = useState(true)
     useEffect(() => {
         if (fetch) {
-            console.log("fetching")
             getOnePost(postId)
                 .then(data => setPost(data[0]))
             setFetch(false)
