@@ -17,11 +17,11 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    outDir: "dist",
-    assetsDir: "static",
-    rollupOptions: {
-      input: "index.html",
-    },
-  },
+  // build: {
+  //   outDir: "dist",
+  //   assetsDir: "static",
+  //   rollupOptions: {
+  //     input: "index.html",
+  //   },
+  // },
 })
