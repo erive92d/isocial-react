@@ -1,6 +1,5 @@
 // import user model
-const User = require("../models/User")
-const Post = require("../models/Post")
+const { User, Post } = require("../models")
 // import sign token function from auth
 const { signToken } = require("../utils/auth");
 
