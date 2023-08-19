@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const postSchema = new Schema({
+
     postText: {
         type: String,
         required: 'You need to leave a Post!',
@@ -16,8 +17,8 @@ const postSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        default: Date.now(),
+        // get: (timestamp) => dateFormat(timestamp),
     },
     comments: [
         {
@@ -39,7 +40,13 @@ const postSchema = new Schema({
             },
         },
     ],
+
 },
+    {
+        timestamps: { currentTime: () => Math.floor(Date.now() / 1000) }
+
+    },
+
     {
         toJSON: {
             virtuals: true,
@@ -52,6 +59,7 @@ postSchema.virtual('authorName').get(function () {
 postSchema.virtual('commentCount').get(function () {
     return this.comments.length
 });
+
 
 
 

@@ -7,6 +7,7 @@ import Comments from "../components/Comment/Comments";
 import CommentForm from "../components/Comment/CommentForm";
 import { capitalizeFirst } from "../helper/capitalizeFirst";
 import Loading from "../components/Loading";
+import momentFormat from "../helper/momentFormat";
 
 export default function ViewPost() {
 
@@ -43,7 +44,7 @@ export default function ViewPost() {
                             <Link className="text-lg font-bold" to={`/user/${post.postAuthor[0]._id}`}>{capitalizeFirst(post.postAuthor[0].name)}</Link>
 
                             <h1 className="font-light">{post.postText}</h1>
-                            <p className="text-sm font-thin italic text-right">{post.createdAt}</p>
+                            <p className="text-sm font-thin italic text-right">{momentFormat(post.createdAt)}</p>
                         </div>
                     </div>
 
