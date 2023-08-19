@@ -4,21 +4,25 @@ import { Button } from "@mui/material";
 import { getMe } from "../../api/api";
 import { useState, useEffect } from "react";
 import Logo from "./Logo";
-import SearchUser from "../SearchUser";
+import SearchUser from "./SearchUser";
 import { capitalizeFirst } from "../../helper/capitalizeFirst";
 export default function Header() {
     const [user, setUser] = useState(null)
+    const [isUser, setIsUser] = useState(false)
 
     useEffect(() => {
-        const token = auth.loggedIn() ? auth.getToken() : null
-
-        if (auth.loggedIn()) {
-            getMe(token)
-                .then(data => setUser(data))
+        if (!user) {
+            const token = auth.loggedIn() ? auth.getToken() : null
+            if (auth.loggedIn()) {
+                setIsUser(true)
+                getMe(token)
+                    .then(data => setUser(data))
+            }
         }
+
         // setUser()
 
-    }, [])
+    }, [isUser])
 
     // console.log(user)
 
@@ -26,10 +30,10 @@ export default function Header() {
         <div className="font-thin p-2 flex justify-between items-center">
             <Logo />
             <SearchUser />
-            {user ? (
+            {isUser && user ? (
                 <div className="flex flex-col p-2">
                     <Link className="" to="/me">
-                        Welcome {capitalizeFirst(user.name)}!
+                        Welcome {capitalizeFirst(user?.name)}!
                     </Link>
                 </div>
             ) : (

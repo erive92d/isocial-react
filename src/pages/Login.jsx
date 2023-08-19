@@ -25,7 +25,7 @@ export default function Login() {
 
     const handleClick = async (e) => {
         e.preventDefault()
-        console.log(userData)
+        // console.log(userData)
         try {
             const response = await login(userData)
             console.log(response)

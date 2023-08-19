@@ -34,9 +34,14 @@ export default function Profile() {
     return (
         <div className=" min-h-screen">
             <div className="p-2 flex justify-between">
-                <Button variant="contained" color="success" onClick={() => navigate(-1)}>Back</Button>
-                {!userId && <Button variant="contained" color="error" onClick={() => auth.logout()}>Logout</Button>}
+                <div>
+                    <Button variant="contained" color="success" onClick={() => navigate(-1)}>Back</Button>
+                </div>
+                <div >
+                    {!userId && <Button variant="contained" color="error" onClick={() => auth.logout()}>Logout</Button>}
+                </div>
             </div>
+
 
             <div className="">
                 <div className="bg-white p-2">
