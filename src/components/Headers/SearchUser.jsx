@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getUsers, getUserByName } from "../api/api"
+import { getUsers, getUserByName } from "../../api/api"
 
 
 export default function SearchUser() {

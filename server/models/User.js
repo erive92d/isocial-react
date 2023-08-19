@@ -25,6 +25,12 @@ const userSchema = new Schema(
         ref: 'Post',
       },
     ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     createdAt: {
       type: Date,
       default: Date.now,
