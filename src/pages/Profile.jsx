@@ -14,20 +14,18 @@ import Loading from "../components/Loading";
 export default function Profile() {
     const navigate = useNavigate()
     const [newUser, setNewUser] = useState(null)
+    const [isLogged, setLogged] = useState(true)
     const { userId } = useParams()
-
-
-    useEffect(() => {
-
-        const token = auth.loggedIn() ? auth.getToken() : null
-
-        const newData = userId ? getUser(userId) : getMe(token)
-        newData.then(js => setNewUser(js))
-    }, [newUser])
-
+    const token = auth.loggedIn() ? auth.getToken() : null
     if (auth.loggedIn() && auth.getProfile().data._id === userId) {
         navigate("/me")
     }
+    useEffect(() => {
+        const newData = userId ? getUser(userId) : getMe(token)
+        newData.then(js => setNewUser(js))
+    }, [userId])
+
+
 
     if (!newUser) return <Loading />
 
@@ -35,6 +33,8 @@ export default function Profile() {
         <div className=" min-h-screen">
             <div className="p-2 flex justify-between">
                 <div>
+                    {/* {isLogged && <p>Logged</p>} */}
+
                     <Button variant="contained" color="success" onClick={() => navigate(-1)}>Back</Button>
                 </div>
                 <div >

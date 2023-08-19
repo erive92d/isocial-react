@@ -10,8 +10,9 @@ module.exports = {
     const getUsers = await User.find({});
     res.json(getUsers);
   },
-  async getSingleUser({ user = null, params }, res) {
-    console.log(params);
+  async getSingleUser({ user, params }, res) {
+    // console.log(params);
+    console.log(user)
     const foundUser = await User.findOne({
       $or: [
         { _id: user ? user._id : params.userId },
@@ -24,8 +25,8 @@ module.exports = {
         .status(400)
         .json({ message: "Cannot find a user with this id!" });
     }
-    console.log(foundUser);
-    res.json(foundUser);
+    // console.log(foundUser);
+    return res.json(foundUser);
   },
 
   async querySingleUserPosts({ params }, res) {
@@ -35,7 +36,7 @@ module.exports = {
         authorId: params.userId
       }
     )
-    console.log(postFound)
+    // console.log(postFound)
 
     res.json(postFound)
   },
@@ -67,7 +68,7 @@ module.exports = {
       username: body.username
     })
 
-    console.log(user, "@@@@@@")
+    // console.log(user, "@@@@@@")
     if (!user) {
       return res.status(400).json({ message: "Can't find this user" });
     }
@@ -116,14 +117,14 @@ module.exports = {
   },
 
   async queryOnePost({ params }, res) {
-    console.log(params)
+    // console.log(params)
     const onePost = await Post.find(
       {
         _id: params.postId
       }
     )
 
-    console.log(onePost)
+    // console.log(onePost)
     if (!onePost) {
       return "Post not found"
     }
@@ -165,8 +166,8 @@ module.exports = {
 
   },
   async addComment({ user, body, params }, res) {
-    console.log(params, "params")
-    console.log(body)
+    // console.log(params, "params")
+    // console.log(body)
     try {
       const author = await User.find(
         {
@@ -206,28 +207,28 @@ module.exports = {
       console.error(error)
     }
 
-    console.log(comment, "comment")
+    // console.log(comment, "comment")
   },
 
-  async followUser({ user, params }, res) {
+  // async followUser({ user, params }, res) {
 
-    if (!user) {
-      return res.status(400).json({ message: "Needs to be logged in" })
-    }
+  //   if (!user) {
+  //     return res.status(400).json({ message: "Needs to be logged in" })
+  //   }
 
-    const updateUser = await User.findByIdAndUpdate(
-      {
-        _id: user._id
-      },
-      {
-        $addToSet: {
-          followers: params.userId
-        }
-      }
-    )
+  //   const updateUser = await User.findByIdAndUpdate(
+  //     {
+  //       _id: user._id
+  //     },
+  //     {
+  //       $addToSet: {
+  //         followers: params.userId
+  //       }
+  //     }
+  //   )
 
-    return res.json(updateUser)
-  }
+  //   return res.json(updateUser)
+  // }
 
 
 

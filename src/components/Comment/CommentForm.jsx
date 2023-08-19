@@ -31,10 +31,10 @@ export default function CommentForm({ postId, setRender }) {
 
         try {
             const response = await createComment(token, commentInput, postId)
-            console.log(commentInput)
             if (!response.ok) {
                 return
             }
+
 
             setRender(true)
             // window.location.reload()
