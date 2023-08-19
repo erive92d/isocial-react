@@ -25,7 +25,7 @@ const userSchema = new Schema(
         ref: 'Post',
       },
     ],
-    friends: [
+    followers: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',

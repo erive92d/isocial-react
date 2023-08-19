@@ -207,7 +207,21 @@ module.exports = {
     }
 
     console.log(comment, "comment")
-  }
+  },
+
+  // async followUser({ user, params }, res) {    
+
+  //     const updateUser = await User.findByIdAndUpdate(
+  //       {
+  //         _id: user._id
+  //       },
+  //       {
+  //         $addToSet: {
+  //           followers: 
+  //         }
+  //       }
+  //     )
+  // }
 
 
 
