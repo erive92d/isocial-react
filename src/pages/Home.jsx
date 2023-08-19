@@ -5,7 +5,7 @@ import PostForm from "../components/PostForm"
 import auth from "../api/auth"
 import { capitalizeFirst } from "../helper/capitalizeFirst"
 import Loading from "../components/Loading"
-
+import moment from "moment"
 export default function Home() {
     const [posts, setPosts] = useState(null)
     const [fetch, setFetch] = useState(true)
@@ -31,6 +31,7 @@ export default function Home() {
     posts.sort(function (a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
     });
+    console.log(posts)
 
     return (
         <div className=" min-h-screen">
@@ -46,7 +47,7 @@ export default function Home() {
                             <div className="text-sm font-thin italic flex justify-between">
                                 <p>{post.comments.length !== 0 ? post.comments.length + " comments" : null}</p>
 
-                                <p >{post.createdAt}</p>
+                                <p >{moment(post.createdAt).fromNow()}</p>
 
                             </div>
 

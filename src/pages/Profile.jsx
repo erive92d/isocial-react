@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import UserPosts from "../components/UserPosts";
 import { capitalizeFirst } from "../helper/capitalizeFirst";
 import Loading from "../components/Loading";
-
+import moment from "moment";
 
 export default function Profile() {
     const navigate = useNavigate()
@@ -48,7 +48,8 @@ export default function Profile() {
                     <h1>{capitalizeFirst(newUser.name)}</h1>
                     <p className="italic font-thin text-gray-600">@{newUser.username}</p>
                     {/* <p className="italic font-thin text-gray-600">@{newUser.createdAt}</p> */}
-
+                    <p className="text-right font-thin">Member since {moment(newUser.createdAt).format("MMM Do YY")}
+                    </p>
                 </div>
             </div>
 
