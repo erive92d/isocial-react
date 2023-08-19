@@ -10,22 +10,38 @@ import UserPosts from "../components/UserPosts";
 import { capitalizeFirst } from "../helper/capitalizeFirst";
 import Loading from "../components/Loading";
 import moment from "moment";
+import FollowButton from "../components/FollowButton";
 
 export default function Profile() {
     const navigate = useNavigate()
     const [newUser, setNewUser] = useState(null)
     const [isLogged, setLogged] = useState(true)
     const { userId } = useParams()
-    const token = auth.loggedIn() ? auth.getToken() : null
-    if (auth.loggedIn() && auth.getProfile().data._id === userId) {
-        navigate("/me")
-    }
+
+
     useEffect(() => {
-        const newData = userId ? getUser(userId) : getMe(token)
+
+        const fetchMe = async () => {
+            const token = auth.loggedIn() ? auth.getToken() : null
+            if (!token) {
+                window.location.assign("/login")
+            }
+            const response = await getMe(token)
+
+            return response
+        }
+
+        const newData = userId ? getUser(userId) : fetchMe()
+
         newData.then(js => setNewUser(js))
     }, [userId])
 
 
+
+    if (auth.loggedIn() && auth.getProfile().data._id === userId) {
+        navigate("/me")
+    }
+    console.log(newUser)
 
     if (!newUser) return <Loading />
 
@@ -38,18 +54,33 @@ export default function Profile() {
                     <Button variant="contained" color="success" onClick={() => navigate(-1)}>Back</Button>
                 </div>
                 <div >
-                    {!userId && <Button variant="contained" color="error" onClick={() => auth.logout()}>Logout</Button>}
+                    {!userId ? <Button variant="contained" color="error" onClick={() => auth.logout()}>Logout</Button> :
+                        <FollowButton userId={userId} />
+                    }
                 </div>
             </div>
-
-
             <div className="">
                 <div className="bg-white p-2">
-                    <h1>{capitalizeFirst(newUser.name)}</h1>
-                    <p className="italic font-thin text-gray-600">@{newUser.username}</p>
-                    {/* <p className="italic font-thin text-gray-600">@{newUser.createdAt}</p> */}
-                    <p className="text-right font-thin">Member since {moment(newUser.createdAt).format("MMM Do YY")}
+                    <p className="font-thin text-sm text-right">Member since {moment(newUser.createdAt).format("MMM Do YY")}
                     </p>
+                    {newUser &&
+                        <>
+                            <h1>{capitalizeFirst(newUser.name)}</h1>
+
+                            <p className="italic font-thin text-gray-600">@{newUser.username}</p>
+
+                            {/* <p className="italic font-thin text-gray-600">@{newUser.createdAt}</p> */}
+                            <div className="flex flex-col py-2 font-thin">
+                                <p>{newUser.followers.length} followers </p>
+                                <p>{newUser.following.length} following</p>
+                            </div>
+                        </>
+
+                    }
+
+
+
+
                 </div>
             </div>
 
@@ -62,7 +93,7 @@ export default function Profile() {
                 {/* <ProfilePost userId={userId} /> */}
 
             </div>
-        </div>
+        </div >
     )
 
 }

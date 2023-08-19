@@ -18,7 +18,7 @@ router.route("/comment/:postId").post(authMiddleware, addComment)
 router.route("/me").get(authMiddleware, getSingleUser)
 router.route("/user/:userId").get(getSingleUser)
 router.route("/username/:userN").get(queryUserWithName)
-// router.route("/follow/:userId").post(authMiddleware, followUser)
+router.route("/follow/:userId").post(authMiddleware, followUser)
 
 
 
