@@ -105,7 +105,6 @@ export const getOnePost = async (postId) => {
 }
 
 export const createComment = async (token, comment, postId) => {
-    console.log(comment)
     const response = await fetch(`/api/users/comment/${postId}`, {
         method: "POST",
         headers: {
@@ -115,5 +114,17 @@ export const createComment = async (token, comment, postId) => {
         body: JSON.stringify(comment)
     }
     )
+    return response
+}
+
+export const followUser = async (token, userId) => {
+    const response = await fetch(`/api/users/follow/${userId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`
+        }
+    })
+
     return response
 }
