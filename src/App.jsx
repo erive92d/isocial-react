@@ -14,8 +14,6 @@ import SearchUser from './components/Headers/SearchUser';
 
 function App() {
 
-
-
   return (
 
     <div className='min-h-screen bg-gray-200'>

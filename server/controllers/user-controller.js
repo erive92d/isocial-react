@@ -210,25 +210,63 @@ module.exports = {
     // console.log(comment, "comment")
   },
 
-  // async followUser({ user, params }, res) {
+  async followUser({ user, params }, res) {
 
-  //   if (!user) {
-  //     return res.status(400).json({ message: "Needs to be logged in" })
-  //   }
+    if (!user) {
+      return res.status(400).json({ message: "Needs to be logged in" })
+    }
 
-  //   const updateUser = await User.findByIdAndUpdate(
-  //     {
-  //       _id: user._id
-  //     },
-  //     {
-  //       $addToSet: {
-  //         followers: params.userId
-  //       }
-  //     }
-  //   )
+    const updateUser = await User.findByIdAndUpdate(
+      {
+        _id: user._id
+      },
+      {
+        $addToSet: {
+          following: params.userId
+        }
+      }
+    )
 
-  //   return res.json(updateUser)
-  // }
+    try {
+      const followedUser = await User.findByIdAndUpdate(
+        {
+          _id: params.userId
+        },
+        {
+          $addToSet: {
+            followers: user._id
+          }
+        }
+      )
+
+      return res.json(followedUser)
+    } catch (error) {
+      console.error(error)
+    }
+
+    // console.log(updateUser)
+    // const followedUser = await User.findByIdAndUpdate(
+    //   {
+    //     _id: params._id
+    //   },
+    //   {
+    //     $addToSet: { followers: user._id }
+    //   }
+    // )
+
+    // try {
+    //   
+    //   return res.json(updateUser, followedUser)
+
+
+    // } catch (e) {
+    //   console.error(e)
+    // }
+
+
+
+
+  }
 
 
 
