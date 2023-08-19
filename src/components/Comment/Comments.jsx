@@ -6,7 +6,6 @@ export default function Comments({ comments, author }) {
         return <h1>No one has commented</h1>
     }
     // console.log(comments)
-
     return (
         <div className="">
             {comments?.map((comment) => (

@@ -4,6 +4,7 @@ import { getAllPost } from "../api/api"
 import PostForm from "../components/PostForm"
 import auth from "../api/auth"
 import { capitalizeFirst } from "../helper/capitalizeFirst"
+import Loading from "../components/Loading"
 
 export default function Home() {
     const [posts, setPosts] = useState(null)
@@ -24,11 +25,7 @@ export default function Home() {
     }
 
     if (!posts) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
+        return <Loading />
     }
 
     posts.sort(function (a, b) {

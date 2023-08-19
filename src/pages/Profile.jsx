@@ -8,6 +8,7 @@ import { Button, ButtonBase } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import UserPosts from "../components/UserPosts";
 import { capitalizeFirst } from "../helper/capitalizeFirst";
+import Loading from "../components/Loading";
 
 
 export default function Profile() {
@@ -28,8 +29,7 @@ export default function Profile() {
         navigate("/me")
     }
 
-    if (!newUser) return <h1>Loading..</h1>
-    console.log(newUser)
+    if (!newUser) return <Loading />
 
     return (
         <div className=" min-h-screen">

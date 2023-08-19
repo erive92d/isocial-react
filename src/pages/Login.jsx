@@ -42,7 +42,6 @@ export default function Login() {
             const { token, user } = await response.json();
             auth.login(token);
 
-            navigate(-1)
 
         } catch (error) {
             console.log(error)
@@ -62,8 +61,7 @@ export default function Login() {
     return (
         <div className="flex flex-col  space-y-7 p-5 min-h-screen bg-gray-300">
             {auth.loggedIn() ? <p>
-                Success! You may now head{' '}
-                <Link to="/">back to the homepage.</Link>
+                Logged In Successfully
             </p>
                 :
                 <div className="flex flex-col w-2/3 space-y-5">

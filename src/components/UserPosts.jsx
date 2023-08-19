@@ -4,7 +4,6 @@ import { getAllPost } from "../api/api"
 
 export default function UserPosts({ posts, title, currentUser }) {
     const [grabPosts, setGrabPosts] = useState(null)
-    console.log(posts)
     document.title = `${currentUser}'s profile`
     useEffect(() => {
 
@@ -16,7 +15,6 @@ export default function UserPosts({ posts, title, currentUser }) {
     currentPosts?.sort(function (a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
     });
-    console.log(currentPosts)
 
     return (
         <div className="bg-white p-2">
