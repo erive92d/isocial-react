@@ -23,7 +23,7 @@ export default function Profile() {
 
         const newData = userId ? getUser(userId) : getMe(token)
         newData.then(js => setNewUser(js))
-    }, [])
+    }, [newUser])
 
     if (auth.loggedIn() && auth.getProfile().data._id === userId) {
         navigate("/me")
