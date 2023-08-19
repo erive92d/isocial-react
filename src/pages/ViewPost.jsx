@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import Comments from "../components/Comment/Comments";
 import CommentForm from "../components/Comment/CommentForm";
 import { capitalizeFirst } from "../helper/capitalizeFirst";
+import Loading from "../components/Loading";
 
 export default function ViewPost() {
 
@@ -27,7 +28,7 @@ export default function ViewPost() {
         setFetch(true)
     }
 
-    if (!post) return <h1 className=" animate-bounce">Loading..</h1>
+    if (!post) return <Loading />
     document.title = `${capitalizeFirst(post?.postAuthor[0].username)}'s post`
     return (
         <div className=" min-h-screen">
