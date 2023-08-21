@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { allUsers, login, createUser, getSingleUser, createPost, queryPosts, queryOnePost, addComment, querySingleUserPosts, queryUserWithName, followUser } = require("../../controllers/user-controller");
+const { allUsers, login, createUser, getSingleUser, createPost, queryPosts, queryOnePost, addComment, querySingleUserPosts, queryUserWithName, followUser, deletePost } = require("../../controllers/user-controller");
 
 // import middleware
 const { authMiddleware } = require("../../utils/auth");
@@ -13,7 +13,7 @@ router
 router.route("/login").post(login)
 router.route("/userPost/:userId").get(querySingleUserPosts)
 router.route("/post").post(authMiddleware, createPost).get(queryPosts)
-router.route("/post/:postId").get(queryOnePost)
+router.route("/post/:postId").get(queryOnePost).delete(authMiddleware, deletePost)
 router.route("/comment/:postId").post(authMiddleware, addComment)
 router.route("/me").get(authMiddleware, getSingleUser)
 router.route("/user/:userId").get(getSingleUser)

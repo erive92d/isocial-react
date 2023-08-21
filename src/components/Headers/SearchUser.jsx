@@ -23,7 +23,6 @@ export default function SearchUser() {
         setTextInput(e.target.value)
     }
 
-    console.log(result)
 
     return (
         <div className="p-2 relative">
