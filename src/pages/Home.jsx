@@ -6,12 +6,21 @@ import auth from "../api/auth"
 import { capitalizeFirst } from "../helper/capitalizeFirst"
 import Loading from "../components/Loading"
 import moment from "moment"
+import DeleteButton from "../components/DeleteButton"
 export default function Home() {
     const [posts, setPosts] = useState(null)
     const [fetch, setFetch] = useState(true)
+    const [isAdmin, setAdmin] = useState(false)
+
     document.title = "Home"
 
     useEffect(() => {
+
+        if (auth.loggedIn() && auth.getProfile().data.username === "admin") {
+            setAdmin(true)
+        }
+
+
         if (fetch) {
             getAllPost()
                 .then(data => setPosts(data))
@@ -39,9 +48,10 @@ export default function Home() {
             {posts?.map((post) => {
                 return (
                     <Link to={`/post/${post._id}`} >
-                        <div key={post._id} className="p-2   bg-green-600 text-white m-2 rounded-lg space-y-2">
-                            <p className="text-lg font-bold">{capitalizeFirst(post.postAuthor[0].name)}</p>
 
+                        <div key={post._id} className="p-2   bg-green-600 text-white m-2 rounded-lg space-y-2">
+
+                            <p className="text-lg font-bold">{capitalizeFirst(post.postAuthor[0].name)}</p>
                             <p className="">{post.postText}</p>
                             <div className="text-sm font-thin italic flex justify-between">
                                 <p>{post.comments.length !== 0 ? post.comments.length + " comments" : null}</p>
@@ -49,6 +59,8 @@ export default function Home() {
                                 <p >{moment(post.createdAt).fromNow()}</p>
 
                             </div>
+                            {isAdmin && <DeleteButton postId={post._id} token={auth.getToken()} setRender={setRender} />}
+
 
                             {/* <p>{post.createdAt}</p> */}
                         </div>

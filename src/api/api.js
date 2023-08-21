@@ -128,3 +128,15 @@ export const followUser = async (token, userId) => {
 
     return response
 }
+
+export const deletePost = async (token, postId) => {
+    const response = await fetch(`/api/users/post/${postId}`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`
+        }
+    })
+
+    return response
+}

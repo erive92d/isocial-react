@@ -12,7 +12,7 @@ module.exports = {
   },
   async getSingleUser({ user, params }, res) {
     // console.log(params);
-    console.log(user)
+    // console.log(user)
     const foundUser = await User.findOne({
       $or: [
         { _id: user ? user._id : params.userId },
@@ -165,6 +165,27 @@ module.exports = {
 
 
   },
+
+  async deletePost({ user, params }, res) {
+    // console.log(user, "user")
+    console.log(params, "params")
+    if (user.username === "admin") {
+      const deletePost = await Post.findByIdAndDelete(
+        {
+          _id: params.postId
+        }
+      )
+
+      if (!deletePost) {
+        res.status(420).json({ message: "unable to delete" })
+      }
+
+      return res.json(deletePost)
+    }
+
+    return res.status(450).json({ message: "Not authorized" })
+  },
+
   async addComment({ user, body, params }, res) {
     // console.log(params, "params")
     // console.log(body)
