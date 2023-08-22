@@ -6,12 +6,18 @@ export default function DeleteButton({ postId, token, setRender }) {
     const handleDelete = async (e) => {
         e.preventDefault()
 
-        const response = await deletePost(token, postId)
-        if (!response.ok) {
-            return alert("Could not delete the post")
-        }
+        try {
+            const response = await deletePost(token, postId)
+            if (!response.ok) {
+                return alert("Could not delete the post")
+            }
 
-        setRender(true)
+            setRender(true)
+
+
+        } catch (error) {
+            console.log(error)
+        }
 
 
     }

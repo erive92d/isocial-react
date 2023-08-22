@@ -16,6 +16,7 @@ export default function Profile() {
     const navigate = useNavigate()
     const [newUser, setNewUser] = useState(null)
     const [isLogged, setLogged] = useState(true)
+    const [meData, setMeData] = useState([])
     const { userId } = useParams()
 
 
@@ -27,7 +28,7 @@ export default function Profile() {
                 window.location.assign("/login")
             }
             const response = await getMe(token)
-
+            setMeData(response)
             return response
         }
 
@@ -35,7 +36,6 @@ export default function Profile() {
 
         newData.then(js => setNewUser(js))
     }, [userId])
-
 
 
     if (auth.loggedIn() && auth.getProfile().data._id === userId) {
@@ -77,10 +77,6 @@ export default function Profile() {
                         </>
 
                     }
-
-
-
-
                 </div>
             </div>
 
@@ -88,6 +84,8 @@ export default function Profile() {
                 <UserPosts
                     title={`${newUser.username}'s post`}
                     posts={newUser.post}
+                    userId={newUser._id}
+                    meData={meData}
                     currentUser={newUser.username}
                 />
                 {/* <ProfilePost userId={userId} /> */}

@@ -36,6 +36,10 @@ export default function PostForm({ setRender }) {
         try {
             const token = auth.loggedIn() ? auth.getToken() : null
             const response = await createPost(token, post)
+
+            if (response.status === 500) {
+                return alert("Maximum character 280")
+            }
             if (!response.ok) {
                 return "Something went wrong!"
             }

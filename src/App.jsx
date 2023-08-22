@@ -11,7 +11,6 @@ import Logo from './components/Headers/Logo'
 import Header from './components/Headers/Header';
 import ViewPost from './pages/ViewPost';
 import SearchUser from './components/Headers/SearchUser';
-
 function App() {
 
   return (
