@@ -1,8 +1,9 @@
+import { Button } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { getAllPost } from "../api/api"
 
-export default function UserPosts({ posts, title, currentUser }) {
+export default function UserPosts({ posts, title, currentUser, userId, meData }) {
     const [grabPosts, setGrabPosts] = useState(null)
     document.title = `${currentUser}'s profile`
     useEffect(() => {
@@ -26,7 +27,8 @@ export default function UserPosts({ posts, title, currentUser }) {
                             <h1>{crnt.postText}</h1>
                             <p className="italic font-thin text-right text-sm">{crnt.commentCount} comments</p>
                         </Link>
-
+                        {crnt.postAuthor[0]._id === meData?._id ? <Button>Delete</Button> : null
+                        }
                     </div>
                 ))
 

@@ -156,10 +156,14 @@ module.exports = {
           new: true
         }
       )
+      if (!userPost) {
+        return res.status(501).json({ message: "Max characters allowed have been exceeded" })
+
+      }
 
       return res.json(userPost)
     } catch (error) {
-      console.error(error)
+      return res.status(501).json({ message: "Max characters allowed have been exceeded" })
     }
 
 
@@ -169,21 +173,29 @@ module.exports = {
   async deletePost({ user, params }, res) {
     // console.log(user, "user")
     console.log(params, "params")
-    if (user.username === "admin") {
-      const deletePost = await Post.findByIdAndDelete(
-        {
-          _id: params.postId
-        }
-      )
 
-      if (!deletePost) {
-        res.status(420).json({ message: "unable to delete" })
+    try {
+      if (user.username === "admin") {
+        const deletePost = await Post.findByIdAndDelete(
+          {
+            _id: params.postId
+          }
+        )
+
+        if (!deletePost) {
+          res.status(420).json({ message: "unable to delete" })
+        }
+
+        return res.json(deletePost)
       }
 
-      return res.json(deletePost)
+    } catch (error) {
+      console.log(error)
+      return res.status(450).json({ message: "Not authorized" })
+
     }
 
-    return res.status(450).json({ message: "Not authorized" })
+
   },
 
   async addComment({ user, body, params }, res) {
