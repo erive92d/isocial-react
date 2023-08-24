@@ -48,9 +48,7 @@ export default function CommentForm({ postId, setRender }) {
 
     const handleChange = (e) => {
         const { value, name } = e.target
-        if (e.target.value.length === 280) {
-            window.alert("Max character have been reached")
-        }
+
         setCommentInput({ ...commentInput, [name]: value })
 
     }
