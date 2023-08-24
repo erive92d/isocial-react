@@ -25,9 +25,7 @@ export default function PostForm({ setRender }) {
             return "Cannot be empty!"
         }
 
-        if (e.target.value.length === 280) {
-            window.alert("Max character have been reached")
-        }
+
 
         const { value, name } = e.target
         if (auth.loggedIn()) {
