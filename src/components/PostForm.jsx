@@ -25,6 +25,10 @@ export default function PostForm({ setRender }) {
             return "Cannot be empty!"
         }
 
+        if (e.target.value.length === 280) {
+            window.alert("Max character have been reached")
+        }
+
         const { value, name } = e.target
         if (auth.loggedIn()) {
             setPost({ ...post, [name]: value })
@@ -53,7 +57,6 @@ export default function PostForm({ setRender }) {
         setPost(
             {
                 postText: "",
-
             }
         )
 
@@ -79,6 +82,7 @@ export default function PostForm({ setRender }) {
                             type="text"
                             placeholder="Whatcha thinkin?"
                             onChange={handleChange}
+                            maxLength={280}
                         ></textarea>
                     </div>
 
