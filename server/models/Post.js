@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const postSchema = new Schema({
-
     postText: {
         type: String,
         required: 'You need to leave a Post!',
@@ -11,13 +10,14 @@ const postSchema = new Schema({
         trim: true,
     },
     postAuthor: {
-        type: Object,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        trim: true,
+        // trim: true,
     },
     createdAt: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
         // get: (timestamp) => dateFormat(timestamp),
     },
     comments: [
@@ -29,9 +29,9 @@ const postSchema = new Schema({
                 maxlength: 280,
             },
             commentAuthor: {
-                type: Object,
-                required: true,
-                trim: true
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+
             },
             createdAt: {
                 type: Date,
@@ -53,8 +53,8 @@ const postSchema = new Schema({
         },
     });
 
-postSchema.virtual('authorName').get(function () {
-    return this.postAuthor[0].name
+postSchema.virtual('authorId').get(function () {
+    return this.postAuthor[0]._id
 });
 postSchema.virtual('commentCount').get(function () {
     return this.comments.length

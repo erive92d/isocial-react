@@ -37,10 +37,10 @@ export default function Home() {
         return <Loading />
     }
 
-    posts.sort(function (a, b) {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-
+    // posts.sort(function (a, b) {
+    //     return new Date(b.createdAt) - new Date(a.createdAt);
+    // });
+    // console.log(posts)
     return (
         <div className=" min-h-screen">
             {auth.loggedIn() ? <PostForm setRender={setRender} /> : null}
@@ -50,8 +50,7 @@ export default function Home() {
                     <Link to={`/post/${post._id}`} >
 
                         <div key={post._id} className="p-2   bg-green-600 text-white m-2 rounded-lg space-y-2">
-
-                            <p className="text-lg font-bold">{capitalizeFirst(post.postAuthor[0].name)}</p>
+                            <p className="text-lg font-bold">{capitalizeFirst(post?.postAuthor?.name)}</p>
                             <p className="">{post.postText}</p>
                             <div className="text-sm font-thin italic flex justify-between">
                                 <p>{post.comments.length !== 0 ? post.comments.length + " comments" : null}</p>

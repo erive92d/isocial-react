@@ -27,14 +27,16 @@ export default function Signup() {
             const response = await createUser(userData)
             console.log(response)
             if (!response.ok) {
-                return
+                return alert("Invalid")
             }
+
             const { token, user } = await response.json();
             console.log(user)
             auth.login(token);
 
         } catch (error) {
             console.log(error)
+            return alert("Username is taken")
         }
         setUserData({
             name: "",

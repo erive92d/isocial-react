@@ -30,7 +30,9 @@ export default function ViewPost() {
     }
 
     if (!post) return <Loading />
-    document.title = `${capitalizeFirst(post?.postAuthor[0].username)}'s post`
+
+    // console.log(post)
+    document.title = `${capitalizeFirst(post?.postAuthor?.username)}'s post`
     return (
         <div className=" min-h-screen">
             <div className="p-2">
@@ -41,7 +43,7 @@ export default function ViewPost() {
                 <div className="flex flex-col p-2 my-2 space-y-2">
                     <div className="rounded-lg ">
                         <div className="bg-white p-2 rounded ">
-                            <Link className="text-lg font-bold" to={`/user/${post.postAuthor[0]._id}`}>{capitalizeFirst(post.postAuthor[0].name)}</Link>
+                            <Link className="text-lg font-bold" to={`/user/${post.postAuthor?._id}`}>{capitalizeFirst(post.postAuthor?.name)}</Link>
 
                             <h1 className="font-light">{post.postText}</h1>
                             <p className="text-sm font-thin italic text-right">{momentFormat(post.createdAt)}</p>
@@ -50,7 +52,7 @@ export default function ViewPost() {
 
 
                     <div>
-                        <Comments comments={post.comments} author={post.postAuthor[0]._id} />
+                        <Comments comments={post.comments} author={post.postAuthor?._id} />
 
                     </div>
 

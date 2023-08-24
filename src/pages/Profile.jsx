@@ -31,7 +31,6 @@ export default function Profile() {
             setMeData(response)
             return response
         }
-
         const newData = userId ? getUser(userId) : fetchMe()
 
         newData.then(js => setNewUser(js))
@@ -41,9 +40,10 @@ export default function Profile() {
     if (auth.loggedIn() && auth.getProfile().data._id === userId) {
         navigate("/me")
     }
-    console.log(newUser)
+    // console.log(newUser)
 
     if (!newUser) return <Loading />
+    // console.log(newUser)
 
     return (
         <div className=" min-h-screen">

@@ -1,9 +1,11 @@
 import { Button } from "@mui/material";
 import { deletePost } from "../api/api";
-export default function DeleteButton({ postId, token, setRender }) {
+export default function DeleteButton({ postId, token, setRender, meData }) {
 
 
     const handleDelete = async (e) => {
+
+
         e.preventDefault()
 
         try {
@@ -13,7 +15,6 @@ export default function DeleteButton({ postId, token, setRender }) {
             }
 
             setRender(true)
-
 
         } catch (error) {
             console.log(error)
