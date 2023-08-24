@@ -18,7 +18,7 @@ module.exports = {
         { _id: user ? user._id : params.userId },
         { username: params.username },
       ],
-    });
+    }).populate("post");
 
     if (!foundUser) {
       return res
@@ -32,9 +32,7 @@ module.exports = {
   async querySingleUserPosts({ params }, res) {
     console.log(params)
     const postFound = await Post.find(
-      {
-        authorId: params.userId
-      }
+
     )
     // console.log(postFound)
 
@@ -102,6 +100,7 @@ module.exports = {
         return res.status(400).json({ message: "Something is wrong!" });
       }
 
+
       const token = signToken(user);
       res.json({ token, user });
     } catch (error) {
@@ -111,9 +110,22 @@ module.exports = {
   },
 
   async queryPosts(req, res) {
-    const allPosts = await Post.find({})
+    // const allPosts = await Post.find({}).sort({ createdAt: -1 })
 
-    res.json(allPosts)
+    // res.json(allPosts)
+    try {
+      const allPosts = await Post.find().populate("postAuthor").sort({ createdAt: -1 })
+      if (!allPosts) {
+        return res.status(400).json({ message: "Failed to fetch items" })
+
+      }
+      return res.json(allPosts)
+
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json(error)
+    }
+
   },
 
   async queryOnePost({ params }, res) {
@@ -122,7 +134,13 @@ module.exports = {
       {
         _id: params.postId
       }
-    )
+    ).populate({
+      path: "postAuthor"
+    }).populate({
+      path: "comments.commentAuthor"
+    })
+
+
 
     // console.log(onePost)
     if (!onePost) {
@@ -140,7 +158,7 @@ module.exports = {
     const newPost = await Post.create(
       {
         postText: body.postText,
-        postAuthor: author
+        postAuthor: user._id
       }
     )
 
@@ -170,26 +188,30 @@ module.exports = {
 
   },
 
+
+
   async deletePost({ user, params }, res) {
-    // console.log(user, "user")
+    console.log(user, "user")
     console.log(params, "params")
 
     try {
-      if (user.username === "admin") {
-        const deletePost = await Post.findByIdAndDelete(
-          {
-            _id: params.postId
-          }
-        )
-
-        if (!deletePost) {
-          res.status(420).json({ message: "unable to delete" })
+      if (!user) {
+        return res.status(400).json({ message: "User invalid" })
+      }
+      const deletePost = await Post.findByIdAndDelete(
+        {
+          _id: params.postId
         }
+      )
 
-        return res.json(deletePost)
+      if (!deletePost) {
+        res.status(420).json({ message: "unable to delete" })
       }
 
-    } catch (error) {
+      return res.json(deletePost)
+    }
+
+    catch (error) {
       console.log(error)
       return res.status(450).json({ message: "Not authorized" })
 
@@ -201,19 +223,19 @@ module.exports = {
   async addComment({ user, body, params }, res) {
     // console.log(params, "params")
     // console.log(body)
+    console.log(user)
     try {
-      const author = await User.find(
-        {
-          _id: user._id
-        }
-      )
+      if (!user) {
+        return res.status(400).json({ message: "Need to be logged in" })
+      }
+
       const newComment = {
         commentText: body.commentText,
-        commentAuthor: author
+        commentAuthor: user._id
       }
-      if (!author) {
-        return res.status(400).json({ message: "Invalid user" })
-      }
+      // if (!author) {
+      //   return res.status(400).json({ message: "Invalid user" })
+      // }
 
       if (!newComment) {
         return res.status(400).json({ message: "Could not send comment" })
