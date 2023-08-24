@@ -80,7 +80,7 @@ export default function PostForm({ setRender }) {
                             type="text"
                             placeholder="Whatcha thinkin?"
                             onChange={handleChange}
-                            maxLength={280}
+                        // maxLength={280}
                         ></textarea>
                     </div>
 
