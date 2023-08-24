@@ -48,6 +48,9 @@ export default function CommentForm({ postId, setRender }) {
 
     const handleChange = (e) => {
         const { value, name } = e.target
+        if (e.target.value.length === 280) {
+            window.alert("Max character have been reached")
+        }
         setCommentInput({ ...commentInput, [name]: value })
 
     }
@@ -59,6 +62,7 @@ export default function CommentForm({ postId, setRender }) {
                 placeholder="leave a comment.."
                 onChange={handleChange}
                 name="commentText"
+                maxLength={280}
             ></input>
             {auth.loggedIn() ?
                 <Button onClick={handleSubmit} variant="contained">Send</Button>
