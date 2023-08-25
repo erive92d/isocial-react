@@ -1,32 +1,46 @@
 import { Button } from "@mui/material"
 import { useEffect, useState } from "react"
+import { singleUserPosts } from "../api/api-post"
 import { Link } from "react-router-dom"
-import { getAllPost } from "../api/api"
+import { getAllPost } from "../api/api-post"
 import DeleteButton from "./DeleteButton"
 import DeletePost from "./DeletePost"
 
-export default function UserPosts({ currentUser, meData, posts }) {
-    const [grabPosts, setGrabPosts] = useState(null)
+export default function UserPosts({ currentUser, meData, posts, userId }) {
+    const [grabPosts, setGrabPosts] = useState([])
     document.title = `${currentUser}'s profile`
-    // useEffect(() => {
-    //     getAllPost()
-    //         .then(data => setGrabPosts(data))
-    // }, [])
 
-    // console.log(posts)
-    // console.log(meData)
-    // const currentPosts = grabPosts?.filter(pst => pst.postAuthor[0].username === currentUser)
-    // currentPosts?.sort(function (a, b) {
-    //     return new Date(b.createdAt) - new Date(a.createdAt);
-    // });
-    // console.log(currentPosts)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // const response = await singleUserPosts(userId)
+                // if (!response.ok) {
+                //     console.log("fetching failed")
+                //     return
+                // }
+
+                // console.log(response)
+                // setGrabPosts(response)
+                singleUserPosts(userId)
+                    .then(data => setGrabPosts(data))
+                    .catch(err => console.log(err))
+
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
+
+        fetchData()
+    }, [])
+    console.log(grabPosts)
 
     return (
         <div className="bg-white p-2">
             {/* {title && <h1>{title}</h1>} */}
-            {posts &&
-                posts.map((crnt) => (
-                    <div className="m-2 flex justify-between p-3 rounded-lg bg-green-600 text-white">
+            {grabPosts &&
+                grabPosts.map((crnt) => (
+                    <div key={crnt._id} className="m-2 flex justify-between p-3 rounded-lg bg-green-600 text-white">
 
                         <Link to={`/post/${crnt._id}`}>
                             <h1>{crnt.postText}</h1>

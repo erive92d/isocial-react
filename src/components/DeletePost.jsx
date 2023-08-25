@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
-import { deletePost, getMe } from "../api/api";
+import { getMe } from "../api/api";
+import { deletePost } from "../api/api-post";
 import auth from "../api/auth";
 export default function DeletePost({ meData, postId }) {
 

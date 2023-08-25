@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { getMe, getAllPost, getUser } from "../api/api";
+import { getMe, getUser } from "../api/api";
+import { getAllPost } from "../api/api-post";
 import auth from "../api/auth";
 import Login from "./Login";
 import { useState } from "react";

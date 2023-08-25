@@ -7,37 +7,42 @@ const { signToken } = require("../utils/auth");
 module.exports = {
   //get all users
   async allUsers(req, res) {
-    const getUsers = await User.find({});
-    res.json(getUsers);
+    try {
+      const getUsers = await User.find({});
+
+      if (!getUsers) {
+        res.status(400).json({ message: "Failed" })
+      }
+      res.status(200).json(getUsers);
+
+    } catch (err) {
+      res.status(400).json({ message: "Failed" })
+    }
+
   },
   async getSingleUser({ user, params }, res) {
-    // console.log(params);
-    // console.log(user)
-    const foundUser = await User.findOne({
-      $or: [
-        { _id: user ? user._id : params.userId },
-        { username: params.username },
-      ],
-    }).populate("post");
 
-    if (!foundUser) {
-      return res
-        .status(400)
-        .json({ message: "Cannot find a user with this id!" });
+    try {
+      const foundUser = await User.findOne({
+        $or: [
+          { _id: user ? user._id : params.userId },
+          { username: params.username },
+        ],
+      }).populate("post");
+
+      if (!foundUser) {
+        return res
+          .status(400)
+          .json({ message: "Cannot find a user with this id!" });
+      }
+      // console.log(foundUser);
+      return res.status(200).json(foundUser);
+    } catch (err) {
+      res.status(400).json({ message: "Failed" })
     }
-    // console.log(foundUser);
-    return res.json(foundUser);
+
   },
 
-  async querySingleUserPosts({ params }, res) {
-    console.log(params)
-    const postFound = await Post.find(
-
-    )
-    // console.log(postFound)
-
-    res.json(postFound)
-  },
 
   async queryUserWithName({ params }, res) {
     console.log
@@ -52,39 +57,48 @@ module.exports = {
       if (!userFound) {
         return "No user found"
       }
-      return res.json(userFound)
+      return res.status(200).json(userFound)
 
     } catch (error) {
       console.log(error)
+      res.status(500).json({ message: "User not found" })
     }
 
   },
 
   async login({ body }, res) {
     // console.log(body)
-    const user = await User.findOne({
-      username: body.username
-    })
 
-    // console.log(user, "@@@@@@")
-    if (!user) {
-      return res.status(400).json({ message: "Can't find this user" });
+    try {
+      const user = await User.findOne({
+        username: body.username
+      })
+
+      // console.log(user, "@@@@@@")
+      if (!user) {
+        return res.status(400).json({ message: "Can't find this user" });
+      }
+
+      const correctPw = await user.isCorrectPassword(body.password);
+      if (!correctPw) {
+        return res.status(420).json({ message: "Wrong password!" });
+      }
+
+      // res.json(user)
+
+      const token = signToken(user);
+
+      if (!token) {
+        return
+      }
+
+      res.json({ token, user });
+
+    }
+    catch (err) {
+      return res.status(400).json({ message: "login failed" })
     }
 
-    const correctPw = await user.isCorrectPassword(body.password);
-    if (!correctPw) {
-      return res.status(420).json({ message: "Wrong password!" });
-    }
-
-    // res.json(user)
-
-    const token = signToken(user);
-
-    if (!token) {
-      return
-    }
-
-    res.json({ token, user });
   },
   async createUser({ body }, res) {
 
@@ -109,116 +123,7 @@ module.exports = {
     }
   },
 
-  async queryPosts(req, res) {
-    // const allPosts = await Post.find({}).sort({ createdAt: -1 })
 
-    // res.json(allPosts)
-    try {
-      const allPosts = await Post.find().populate("postAuthor").sort({ createdAt: -1 })
-      if (!allPosts) {
-        return res.status(400).json({ message: "Failed to fetch items" })
-
-      }
-      return res.json(allPosts)
-
-    } catch (error) {
-      console.log(error)
-      return res.status(400).json(error)
-    }
-
-  },
-
-  async queryOnePost({ params }, res) {
-    // console.log(params)
-    const onePost = await Post.find(
-      {
-        _id: params.postId
-      }
-    ).populate({
-      path: "postAuthor"
-    }).populate({
-      path: "comments.commentAuthor"
-    })
-
-
-
-    // console.log(onePost)
-    if (!onePost) {
-      return "Post not found"
-    }
-
-    return res.json(onePost)
-
-  },
-  async createPost({ user, body }, res) {
-
-    const author = await User.find(
-      { _id: user._id }
-    )
-    const newPost = await Post.create(
-      {
-        postText: body.postText,
-        postAuthor: user._id
-      }
-    )
-
-    try {
-      const userPost = await User.findOneAndUpdate(
-        {
-          _id: user._id
-        },
-        {
-          $addToSet: { post: newPost }
-        },
-        {
-          new: true
-        }
-      )
-      if (!userPost) {
-        return res.status(501).json({ message: "Max characters allowed have been exceeded" })
-
-      }
-
-      return res.json(userPost)
-    } catch (error) {
-      return res.status(501).json({ message: "Max characters allowed have been exceeded" })
-    }
-
-
-
-  },
-
-
-
-  async deletePost({ user, params }, res) {
-    console.log(user, "user")
-    console.log(params, "params")
-
-    try {
-      if (!user) {
-        return res.status(400).json({ message: "User invalid" })
-      }
-      const deletePost = await Post.findByIdAndDelete(
-        {
-          _id: params.postId
-        }
-      )
-
-      if (!deletePost) {
-        res.status(420).json({ message: "unable to delete" })
-      }
-
-      return res.json(deletePost)
-    }
-
-    catch (error) {
-      console.log(error)
-      return res.status(450).json({ message: "Not authorized" })
-
-    }
-
-
-  },
 
   async addComment({ user, body, params }, res) {
     // console.log(params, "params")
