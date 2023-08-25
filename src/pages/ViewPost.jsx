@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getOnePost } from "../api/api";
+import { getOnePost } from "../api/api-post";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import Comments from "../components/Comment/Comments";

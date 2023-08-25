@@ -11,9 +11,6 @@ router
   .post(createUser)
 
 router.route("/login").post(login)
-router.route("/userPost/:userId").get(querySingleUserPosts)
-router.route("/post").post(authMiddleware, createPost).get(queryPosts)
-router.route("/post/:postId").get(queryOnePost).delete(authMiddleware, deletePost)
 router.route("/comment/:postId").post(authMiddleware, addComment)
 router.route("/me").get(authMiddleware, getSingleUser)
 router.route("/user/:userId").get(getSingleUser)

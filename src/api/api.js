@@ -77,32 +77,6 @@ export const getUserByName = async (name) => {
         console.error(err)
     }
 }
-export const createPost = (token, postBody) => {
-    try {
-        return fetch('/api/users/post', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify(postBody)
-        })
-    } catch (err) {
-        console.error(err)
-    }
-}
-
-export const getAllPost = async () => {
-    const response = await fetch('/api/users/post')
-    const data = await response.json()
-    return data
-}
-
-export const getOnePost = async (postId) => {
-    const response = await fetch(`/api/users/post/${postId}`)
-    const data = await response.json()
-    return data
-}
 
 export const createComment = async (token, comment, postId) => {
     const response = await fetch(`/api/users/comment/${postId}`, {
@@ -129,14 +103,3 @@ export const followUser = async (token, userId) => {
     return response
 }
 
-export const deletePost = async (token, postId) => {
-    const response = await fetch(`/api/users/post/${postId}`, {
-        method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json',
-            authorization: `Bearer ${token}`
-        }
-    })
-
-    return response
-}

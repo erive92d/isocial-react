@@ -1,13 +1,13 @@
 import { Button, FormControl, FormHelperText } from "@mui/material";
 import { useState } from "react";
-import { createPost } from "../api/api";
+import { createPost } from "../api/api-post";
 import { useNavigate } from "react-router-dom";
 import auth from "../api/auth";
 export default function PostForm({ setRender }) {
     const navigate = useNavigate()
     // const authorId = auth.loggedIn() ? auth.getProfile().data._id : null
     const [show, setShow] = useState(false)
-
+    const [inputLength, setInputLength] = useState(0)
     const [post, setPost] = useState(
         {
             postText: "",
@@ -24,8 +24,7 @@ export default function PostForm({ setRender }) {
         if (!e.target.value) {
             return "Cannot be empty!"
         }
-
-
+        setInputLength(e.target.value.length)
 
         const { value, name } = e.target
         if (auth.loggedIn()) {
@@ -50,6 +49,7 @@ export default function PostForm({ setRender }) {
             // window.location.reload()
         } catch (error) {
             console.error(error)
+            return
         }
 
         setPost(
@@ -80,10 +80,12 @@ export default function PostForm({ setRender }) {
                             type="text"
                             placeholder="Whatcha thinkin?"
                             onChange={handleChange}
-                        // maxLength={280}
+                            maxLength={280}
                         ></textarea>
                     </div>
-
+                    <div>
+                        <p>{inputLength}</p>
+                    </div>
                     <div>
                         <Button variant="contained" onClick={handleSubmit}>Send</Button>
 
