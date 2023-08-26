@@ -34,10 +34,11 @@ export default function PostForm({ setRender }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log("test")
         try {
             const token = auth.loggedIn() ? auth.getToken() : null
             const response = await createPost(token, post)
-
+            console.log(response)
             if (response.status === 500) {
                 return alert("Maximum character 280")
             }
@@ -46,6 +47,8 @@ export default function PostForm({ setRender }) {
             }
             setRender(true)
             setShow(false)
+            console.log(show)
+
             // window.location.reload()
         } catch (error) {
             console.error(error)
@@ -84,7 +87,7 @@ export default function PostForm({ setRender }) {
                         ></textarea>
                     </div>
                     <div>
-                        <p>{inputLength}</p>
+                        <p>{inputLength} / 280</p>
                     </div>
                     <div>
                         <Button variant="contained" onClick={handleSubmit}>Send</Button>

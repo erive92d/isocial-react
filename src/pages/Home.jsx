@@ -19,8 +19,6 @@ export default function Home() {
         if (auth.loggedIn() && auth.getProfile().data.username === "admin") {
             setAdmin(true)
         }
-
-
         if (fetch) {
             getAllPost()
                 .then(data => setPosts(data))

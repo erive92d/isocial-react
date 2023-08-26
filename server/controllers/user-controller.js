@@ -9,10 +9,6 @@ module.exports = {
   async allUsers(req, res) {
     try {
       const getUsers = await User.find({});
-
-      if (!getUsers) {
-        res.status(400).json({ message: "Failed" })
-      }
       res.status(200).json(getUsers);
 
     } catch (err) {
@@ -30,13 +26,7 @@ module.exports = {
         ],
       }).populate("post");
 
-      if (!foundUser) {
-        return res
-          .status(400)
-          .json({ message: "Cannot find a user with this id!" });
-      }
-      // console.log(foundUser);
-      return res.status(200).json(foundUser);
+      res.status(200).json(foundUser);
     } catch (err) {
       res.status(400).json({ message: "Failed" })
     }
@@ -52,15 +42,9 @@ module.exports = {
         // { username: params.name },
       }
       )
-
-
-      if (!userFound) {
-        return "No user found"
-      }
-      return res.status(200).json(userFound)
+      res.status(200).json(userFound)
 
     } catch (error) {
-      console.log(error)
       res.status(500).json({ message: "User not found" })
     }
 
@@ -92,60 +76,41 @@ module.exports = {
         return
       }
 
-      res.json({ token, user });
+      res.status(200).json({ token, user });
 
     }
     catch (err) {
-      return res.status(400).json({ message: "login failed" })
+      res.status(400).json({ message: "login failed" })
     }
 
   },
   async createUser({ body }, res) {
 
-    const newUser = {
-      ...body,
-      name: body.name.toLowerCase()
-    }
 
     try {
-      const user = await User.create(newUser);
-
-      if (!user) {
-        return res.status(400).json({ message: "Something is wrong!" });
+      const newUser = {
+        ...body,
+        name: body.name.toLowerCase()
       }
 
+      const user = await User.create(newUser);
 
       const token = signToken(user);
-      res.json({ token, user });
+      res.status(200).json({ token, user });
     } catch (error) {
-      console.log(error)
-      return res.status(560).json(error);
+      res.status(560).json(error);
     }
   },
 
 
 
   async addComment({ user, body, params }, res) {
-    // console.log(params, "params")
-    // console.log(body)
-    console.log(user)
-    try {
-      if (!user) {
-        return res.status(400).json({ message: "Need to be logged in" })
-      }
 
+    try {
       const newComment = {
         commentText: body.commentText,
         commentAuthor: user._id
       }
-      // if (!author) {
-      //   return res.status(400).json({ message: "Invalid user" })
-      // }
-
-      if (!newComment) {
-        return res.status(400).json({ message: "Could not send comment" })
-      }
-      console.log(newComment)
 
       const updatedPost = await Post.findOneAndUpdate(
         {
@@ -159,35 +124,29 @@ module.exports = {
         }
       )
 
-      console.log(updatedPost.comments)
-
-      return res.json(updatedPost)
+      res.status(200).json(updatedPost)
 
     } catch (error) {
-      console.error(error)
+      res.status(400).json(error.message)
     }
-
-    // console.log(comment, "comment")
   },
 
   async followUser({ user, params }, res) {
 
-    if (!user) {
-      return res.status(400).json({ message: "Needs to be logged in" })
-    }
 
-    const updateUser = await User.findByIdAndUpdate(
-      {
-        _id: user._id
-      },
-      {
-        $addToSet: {
-          following: params.userId
-        }
-      }
-    )
 
     try {
+
+      const updateUser = await User.findByIdAndUpdate(
+        {
+          _id: user._id
+        },
+        {
+          $addToSet: {
+            following: params.userId
+          }
+        }
+      )
       const followedUser = await User.findByIdAndUpdate(
         {
           _id: params.userId
@@ -199,9 +158,9 @@ module.exports = {
         }
       )
 
-      return res.json(followedUser)
+      res.status(200).json(followedUser)
     } catch (error) {
-      console.error(error)
+      res.status(400).json(error)
     }
 
     // console.log(updateUser)
