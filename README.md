@@ -1,6 +1,8 @@
-# iSocial Project README
+# iSocial README
 
 Welcome to the iSocial project! This is a social media web application built using the MERN (MongoDB, Express, React, Node.js) stack along with Vite as the build tool. iSocial allows users to create accounts, make posts, and interact through comments, providing a platform for social interaction.
+
+![Screen Shot 2023-08-26 at 8 33 17 PM](https://github.com/erive92d/isocial-react/assets/110507887/4c3b6649-16a5-49a4-9fa3-9b200dcf38e1)
 
 ## Table of Contents
 
